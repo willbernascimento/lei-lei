@@ -1,13 +1,3 @@
-install.packages('car')
-install.packages('relaimpo')
-install.packages("ggExtra")
-install.packages("Rmisc")
-install.packages("ggplot2")
-install.packages("psych")
-install.packages('GPArotation')
-install.packages('grid')
-install.packages('MASS')
-install.packages('hrbrthemes')
 
 ## ----------------------------------------------------------------------------------- ##
 ##  Replication files for: Lei é lei? Maurice Duverger e as eleições para o Senado no Brasil
@@ -18,51 +8,61 @@ install.packages('hrbrthemes')
 
 # load packages
 
-library(foreign)
-library(dplyr)
-library(ggplot2)
-library(agricolae)
-library(psych)
-
-
-library(GPArotation)
-library(car)
-
-library(ggExtra)
-library(relaimpo)
-library(car)
 library(readxl)
-
-
+#library(psych)
+library(dplyr)
+library(grid)
+library(ggplot2)
+#library(Rmisc)
+library(reshape)
+library(car)
+library(grid)
+library(hrbrthemes)
+library(forcats)
+library(GGally)
+library(broom)
+library(lmtest)
+library(plm)
+library(systemfit)
 
 ## load and clean data / Preparação da Base:
 
 Lei <- read_excel("./data/Lei.xlsx")
-Lei <- as.data.frame(Lei)
 
-# agregado pelo dplyr
+
+# group data by year / agregado por ano com dplyr
+
+#Lei$Ano <- as.factor(Lei$Ano)
 
 Lei3 <- Lei %>%
   group_by(Ano) %>%
-  summarise(Nep = mean(Nep), n_candidatos = mean(Ncand),
-            percvotos = mean(PercVot, na.rm = TRUE), RazPerd = mean(RazPerd, na.rm = TRUE))
+  summarise(Nep = mean(Nep),
+            n_candidatos = mean(Ncand),
+            percvotos = mean(PercVot, na.rm = TRUE),
+            RazPerd = mean(RazPerd, na.rm = TRUE))
 
 
+## Descriptives of NEP / Análise Descritiva dos Dados - NEP:
 
-## Análise Descritiva dos Dados - NEP:
+# to avoid conflict with plyr, does not load psych and Rmisc in workplace
+# probably the conflict is only with Rmisc
 
-describe.by(Lei$Nep, Lei$Ano)
-describe.by(Lei$Ncand, Lei$Ano)
-describe.by(Lei$PercVot, Lei$Ano)
+psych::describe.by(Lei$Nep, Lei$Ano)
+psych::describe.by(Lei$Ncand, Lei$Ano)
+psych::describe.by(Lei$PercVot, Lei$Ano)
 
-# Figura 1 - Distribuição do Número de Partidos (NEP)
+
+# Figure 1 / Figura 1 - Distribuição do Número de Partidos (NEP)
 # por eleição e por magnitude (1998-2018)
 
-library(grid)
-
-G01 <- ggplot(Lei3, aes(x = Ano, y = Nep ))+ geom_smooth(method = "loess", se = FALSE, color = "black")+
-  scale_x_continuous(breaks = seq(1998,2018,4)) + scale_y_continuous(breaks = seq(0,10,0.5)) + theme_light(base_size = 18)+
-  xlab('Eleição') + ylab('Número Efetivo de Partidos')
+G01 <-
+  ggplot(Lei3, aes(x = Ano, y = Nep)) +
+  geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_discrete(breaks = seq(1998, 2018, 4)) +
+  scale_y_continuous(breaks = seq(0, 10, 0.5)) +
+  theme_light(base_size = 18) +
+  xlab('Eleição') +
+  ylab('Número Efetivo de Partidos')
 
 
 G02<- ggplot(Lei, aes(as.factor(Ano), Nep, fill = factor(Magnitude))) +
@@ -77,7 +77,7 @@ print(G01, vp = viewport(layout.pos.row = 1, layout.pos.col = 1))
 print(G02, vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
 
 
-# Figura 2 - Distribuição do Número Efetivo de Partidos (NEP) por magnitude
+# Figure 2 / Figura 2 - Distribuição do Número Efetivo de Partidos (NEP) por magnitude
 # da eleição (1998-2018)
 
 
@@ -89,7 +89,7 @@ G03<- ggplot(Lei, aes(x=Nep, fill = Magnitude)) +
   geom_vline(aes(xintercept= 4.43), color="grey45", linetype="dashed", size=0.8)+
   geom_vline(aes(xintercept=2.51), color="grey80", linetype="dashed", size=0.8)
 
-describe.by(Lei$Nep, Lei$Magnitude)
+psych::describe.by(Lei$Nep, Lei$Magnitude)
 
 G04 <- ggplot(Lei, aes(as.factor(Magnitude), Nep)) +
   geom_boxplot() + xlab('Magnitude')+
@@ -100,12 +100,10 @@ pushViewport(viewport(layout = grid.layout(1, 2)))
 print(G03, vp = viewport(layout.pos.row = 1, layout.pos.col = 1))
 print(G04, vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
 
-# Figura 3 - Diferença entre as médias de NEP por ano e por magnitude
+# Figure 3 / Figura 3 - Diferença entre as médias de NEP por ano e por magnitude
 # (1998-2018)
 
-library(Rmisc)
-
-Leia <- summarySE(Lei, measurevar = 'Nep', groupvars = c("Magnitude", "Ano") )
+Leia <- Rmisc::summarySE(Lei, measurevar = 'Nep', groupvars = c("Magnitude", "Ano") )
 
 Leia$round <- factor(Leia$Magnitude)
 Leia$ano <- factor(Leia$Ano)
@@ -135,20 +133,16 @@ print(G06, vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
 
 
 
-# Figura 4 - Percentual de unidade federativas e média do percentual
+# Figure 4 / Figura 4 - Percentual de unidade federativas e média do percentual
 # de partidos com dois candidatos
 
-Lan <- read_excel("Lan.xlsx")
-Lan <- as.data.frame(Lan)
+Lan <- read_excel("./data/Lan.xlsx")
 
 L <- data.frame(
   Eleição = rep(c("2002", "2010", "2018"), 2),
   Variáveis = c(rep("UF (%)", 3), rep("Partido (%)", 3)),
   Number_of_Occurrences = c(33.33, 62.96, 81.48,18.33, 24.11, 16.71)
 )
-
-
-library(reshape)
 
 L.m <- melt(L)
 
@@ -159,17 +153,17 @@ ggplot(L.m, aes(Variáveis, value, fill = Eleição)) + theme_light(base_size = 
   scale_fill_manual(values = c("grey45", "grey80", "grey25"))
 
 
-# Figura 5 - Número de Candidatos por eleição e número efetivo de partidos
+# Figure 5 / Figura 5 - Número de Candidatos por eleição e número efetivo de partidos
 # (1998-2018)
 
-#Teste de diferença entre médias:
+# mean difference test / Teste de diferença entre médias:
 
-describe.by(Lei$Nep, group = Lei$Magnitude)
-leveneTest(Lei$Nep, Lei$Magnitude)
+psych::describe.by(Lei$Nep, group = Lei$Magnitude)
+car::leveneTest(Lei$Nep, Lei$Magnitude)
 t.test(Lei$Nep ~ Lei$Magnitude, var.equal = T)
 
 
-Leic <- summarySE(Lei, measurevar = 'Ncand', groupvars = c("Magnitude", "Ano") )
+Leic <- Rmisc::summarySE(Lei, measurevar = 'Ncand', groupvars = c("Magnitude", "Ano") )
 
 
 G07 <- ggplot(Leic, aes(x=Ano, y=Ncand, group=Magnitude, color=Magnitude)) +
@@ -183,8 +177,8 @@ G07 <- ggplot(Leic, aes(x=Ano, y=Ncand, group=Magnitude, color=Magnitude)) +
 
 # Teste de diferença entre médias:
 
-describe.by(Lei$Ncand, group = Lei$Magnitude)
-leveneTest(Lei$Ncand, Lei$Magnitude)
+psych::describe.by(Lei$Ncand, group = Lei$Magnitude)
+car::leveneTest(Lei$Ncand, Lei$Magnitude)
 t.test(Lei$Ncand ~ Lei$Magnitude, var.equal = T)
 
 
@@ -206,12 +200,12 @@ print(G08, vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
 LeiUmt <- filter(Lei, Magnitude == 'Um Terço')
 LeiDoist <- filter(Lei, Magnitude == 'Dois Terços')
 
-corr.test(LeiUmt$Ncand, LeiUmt$Nep, method = 'pearson')
-corr.test(LeiDoist$Ncand, LeiDoist$Nep, method = 'pearson')
+psych::corr.test(LeiUmt$Ncand, LeiUmt$Nep, method = 'pearson')
+psych::corr.test(LeiDoist$Ncand, LeiDoist$Nep, method = 'pearson')
 
 
 
-# Figura 6 - Razão entre o percentual de votos dos candidatos derrotados
+# Figure 6 / Figura 6 - Razão entre o percentual de votos dos candidatos derrotados
 # (1998-2018)
 
 G09 <- ggplot(Lei3, aes(x = Ano, y = RazPerd ))+ geom_smooth(method = "loess", se = FALSE, color = "black")+
@@ -233,15 +227,14 @@ print(G10, vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
 
 
 
-# Gráficos de Barra - Partidos no Equilíbrio (Princiais Competidores)
+# Bar graph / Gráficos de Barra - Partidos no Equilíbrio (Princiais Competidores)
 
-part <- read_excel("Part.xlsx")
-part <- as.data.frame(part)
+part <- read_excel("./data/Part.xlsx")
 
-library(forcats)
 
-filter(part, ANO_ELEICAO == 1998)%>%
-  ggplot(aes(x=fct_reorder(SIGLA_PARTIDO, perc54), y = perc54))+
+
+filter(part, Ano == 1998)%>%
+  ggplot(aes(x=fct_reorder(Partido, Perc), y = Perc))+
   geom_col(fill = "black", width = 0.5) +
   labs(title = '1998',
        x = "Partidos",
@@ -250,8 +243,8 @@ filter(part, ANO_ELEICAO == 1998)%>%
   coord_flip()+theme_minimal()
 
 
-filter(part, ANO_ELEICAO == 2002)%>%
-  ggplot(aes(x=fct_reorder(SIGLA_PARTIDO, perc54), y = perc54))+
+filter(part, Ano == 2002)%>%
+  ggplot(aes(x=fct_reorder(Partido, Perc), y = Perc))+
   geom_col(fill = "black", width = 0.5) +
   labs(title = '2002',
        x = "Partidos",
@@ -261,8 +254,8 @@ filter(part, ANO_ELEICAO == 2002)%>%
 
 
 
-filter(part, ANO_ELEICAO == 2010)%>%
-  ggplot(aes(x=fct_reorder(SIGLA_PARTIDO, perc54), y = perc54))+
+filter(part, Ano == 2010)%>%
+  ggplot(aes(x=fct_reorder(Partido, Perc), y = Perc))+
   geom_col(fill = "black", width = 0.5) +
   labs(title = '2010',
        x = "Partidos",
@@ -270,8 +263,8 @@ filter(part, ANO_ELEICAO == 2010)%>%
   theme(axis.text.x = element_text(angle = 90, hjust = 1))+
   coord_flip()+theme_minimal()
 
-filter(part, ANO_ELEICAO == 2014)%>%
-  ggplot(aes(x=fct_reorder(SIGLA_PARTIDO, perc54), y = perc54))+
+filter(part, Ano == 2014)%>%
+  ggplot(aes(x=fct_reorder(Partido, Perc), y = Perc))+
   geom_col(fill = "black", width = 0.5) +
   labs(title = '2014',
        x = "Partidos",
@@ -280,8 +273,8 @@ filter(part, ANO_ELEICAO == 2014)%>%
   coord_flip()+theme_minimal()
 
 
-filter(part, ANO_ELEICAO == 2018)%>%
-  ggplot(aes(x=fct_reorder(SIGLA_PARTIDO, perc54), y = perc54))+
+filter(part, Ano == 2018)%>%
+  ggplot(aes(x=fct_reorder(Partido, Perc), y = Perc))+
   geom_col(fill = "black", width = 0.5) +
   labs(title = '2018',
        x = "Partidos",
@@ -291,26 +284,21 @@ filter(part, ANO_ELEICAO == 2018)%>%
 
 
 
-# Figura 10 - Número e Percentual de Participação no Grupo de Principais
+# Figure 10 / Figura 10 - Número e Percentual de Participação no Grupo de Principais
 # Competidores (1998 - 2018)
 
-# Possivel Conflito com o psych
 
-library(dplyr)
-library(ggplot2)
-library(grid)
-library(hrbrthemes)
-
-part2 <- group_by(part, ANO_ELEICAO)%>%
-  summarize(count = n())
+part2 <- part %>%
+  group_by(Ano) %>%
+  summarise(count = n())
 
 
-G11 <-  ggplot(part2, aes(x = ANO_ELEICAO, y = count ))+ geom_smooth(method = "loess", se = FALSE, color = "black")+
+G11 <-  ggplot(part2, aes(x = Ano, y = count ))+ geom_smooth(method = "loess", se = FALSE, color = "black")+
   scale_x_continuous(breaks =seq(1998,2018,4)) + scale_y_continuous(breaks = seq(0,20,2)) + theme_light(base_size = 18)+
   xlab('Eleição') + ylab('Número de Partidos')
 
 
-G12 <- ggplot(part, aes(x=perc54, fill=Magnitude)) +
+G12 <- ggplot(part, aes(x=Perc, fill=Magnitude)) +
   geom_histogram( color="#e9ecef", alpha=0.6,
                   position = 'identity') +
   scale_fill_manual(values=c("#808080", "#C0C0C0")) +
@@ -346,7 +334,7 @@ G14 <- ggplot(Lei, aes(x=Nep, y=ConcGov, color=Magnitude, size=Magnitude, group 
   scale_x_continuous(breaks =seq(1,10,0.5))
 
 
-# Correlações:
+# correlations to plot / Correlações:
 
 Lei1T <- Lei%>%
   filter(Magnitude == 'Um Terço')
@@ -392,13 +380,7 @@ Lei$RazPerdlog <- log(Lei$RazPerd)
 
 
 
-## Modelo de Regressão Linear - Dados Agrupados ##
-
-install.packages("GGally")
-install.packages("broom")
-library(GGally)
-library(broom)
-
+## Linear regression models / Modelo de Regressão Linear - Dados Agrupados ##
 
 m01 <- lm(Neplog ~ Mag + PercVotlog + Ncandlog + ConcGov + RazPerdlog, Lei)
 
@@ -419,13 +401,10 @@ gm1 +theme_light(base_size = 19)+labs(x = "Coeficientes", y = "Variáveis")+
   scale_x_continuous(breaks = seq(-1.0,0.6,0.2))
 
 
-## Anexos Com Bônus ##
+## APPENDICES / Anexos Com Bônus ##
 
 
-# Análise de Resíduo - Modelo de Regressão Linear - Dados Agrupados
-
-install.packages('lmtest')
-library(lmtest)
+# Residual Analysis / Análise de Resíduo - Modelo de Regressão Linear - Dados Agrupados
 
 dwtest(m01)
 bgtest(m01)
@@ -433,9 +412,9 @@ bptest(m01)
 vif(lm(Neplog ~ Mag + PercVotlog + Ncandlog + ConcGov + RazPerdlog, Lei))
 
 
-# Modelo de Regressão Linear com Interação - Dados Agrupados
+# OLS with interactions / Modelo de Regressão Linear com Interação - Dados Agrupados
 
-# Interação
+# interaction / Interação
 
 Lei$MagRaz <- Lei$Mag*Lei$RazPerdlog
 
@@ -444,13 +423,7 @@ m03 <- lm(Neplog ~ Mag + PercVotlog + Ncandlog + ConcGov + RazPerdlog + MagRaz, 
 summary(m03)
 
 
-# Modelos Regressão Linear com Dados de Painel
-
-install.packages("plm")
-library(plm)
-install.packages("systemfit")
-library("systemfit")
-
+# OLS panel data / Modelos Regressão Linear com Dados de Painel
 
 m02 <- plm(Neplog ~ Mag + PercVotlog + Ncandlog + ConcGov + RazPerdlog, Lei,index = c("Ano"), effect = "time")
 summary(m02)
@@ -464,6 +437,6 @@ gm2 +theme_light(base_size = 19)+labs(x = "Coeficientes", y = "Variáveis")+
                             'Concentração Governador'))+
   scale_x_continuous(breaks = seq(-1.0,0.6,0.2))
 
-
+## --------------------------------------------
 
 

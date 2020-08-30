@@ -1,0 +1,222 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage[{left=3cm,right=2cm,top=3cm,bottom=2cm}]{geometry}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{float} %Me possibilita usar o Hear para a figura.
+\usepackage[dvipsnames]{xcolor}
+\pagestyle{empty}
+
+\title{\textbf{CODEBOOK - Lei é Lei?}}
+\author{}
+
+\date{ }
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+\maketitle
+
+\noindent SILVA JÚNIOR, J. A.; NASCIMENTO, Willber S.; LIMA, A. F., OMENA, W. S. (2020)
+Lei é lei? Maurice Duverger e as eleições para o Senado no Brasil.Revista Debates. 14, 2, p.153-180.
+
+\tableofcontents
+\pagebreak
+
+
+	\section{Informações aos Usuários}
+	Bancos de dados: Lei é lei? Maurice Duverger e as eleições para o Senado no Brasil.
+	A base deste artigo esta disponibilizada em arquivos em .csv no site {\color{red}\url{https://osf.io/sg6dm/}}. Os códigos e rótulos estão disponíveis neste documento. O artigo encontra-se publicado pela revista \textbf{Debates}.
+
+
+	\section{Informações Técnicas}
+	\begin{tabular}{p{3cm} p{10cm}}
+		Banco 1     & Lei \\
+		N           &  162 \\
+		Variáveis   &  10 \\
+		Extensão    & .csv \\
+		Fonte       & TSE  \\
+	\end{tabular} \\
+   -- {\color{blue}\url{http://www.tse.jus.br/}}
+ \\ \\ \\
+	\begin{tabular}{p{3cm} p{10cm}}
+		Banco 2      & part \\
+		N           &  86 \\
+		Variáveis   &  6 \\
+		Extensão    & .csv \\
+		Fonte       & TSE
+	\end{tabular} \\
+-- {\color{blue}\url{http://www.tse.jus.br/}} \\
+\\ \\
+	\begin{tabular}{p{3cm} p{10cm}}
+		Banco 3     & Lan \\
+		N           &  3 \\
+		Variáveis   &  3 \\
+		Extensão    & .csv \\
+		Fontes      &  TSE 	\end{tabular} \\
+	-- {\color{blue}\url{http://www.tse.jus.br/}} \\
+
+	\section{Banco 1 - Lei}
+
+		\subsection{Ano}
+		{\bf Tipo:} Discreta \\
+		{\bf Descrição} Ano da Eleição \\
+		\subsection{uf}
+		{\bf Tipo:} Nominal \\
+		{\bf Descrição:} Sigla do Estado.
+		\subsection{Nep}
+		{\bf Tipo:} Contínua \\
+		{\bf Descrição:} Razão entre 1.00 o somatório do quadrado das proporções de votos.\\
+
+
+		\subsection{Magnitude}
+		{\bf Tipo:} Nominal \\
+		{\bf Descrição:} Número de vagas em disputa a cada eleição.
+		.
+		\subsection{Ncand}
+		{\bf Tipo:} Numérica \\
+		{\bf Descrição:} Número de Candidatos para o Senado.\\
+
+		\subsection{RazPerd}
+		{\bf Tipo:} Contínua \\
+		{\bf Descrição:} Razão entre os percentuais de votos do 1º e do 2º perdedor.\\
+
+
+
+		\subsection{PercVal}
+		{\bf Tipo:} Contínua \\
+		{\bf Descrição:} Percentual de votos válidos para o Senado.\\
+
+		\subsection{ConcPres}
+		{\bf Tipo:} Contínua \\
+		{\bf Descrição:} Somatório do quadrado das proporções de votos para presidente.\\
+
+		\subsection{ConcGov}
+		{\bf Tipo:} Contínua \\
+		{\bf Descrição:} Somatório do quadrado das proporções de votos para Governador.\\
+
+%% -------------------------------
+
+		\section{Banco 2 - part}
+
+		\subsection{Magnitude}
+		{\bf Tipo:} Nominal \\
+		{\bf Descrição:} Tamanho da Renovação do Senado (Um Terço e Dois Terços).\\
+
+		\subsection{Ano}
+		{\bf Tipo:} Discreta \\
+		{\bf Descrição} Ano da Eleição \\
+
+		\subsection{Partido}
+		{\bf Tipo:} Nominal \\
+		{\bf Descrição} Nome do partido que aparece no grupo dos principais competidores.\\
+
+		\subsection{Número}
+		{\bf Tipo:} Discreta \\
+		{\bf Descrição}Total de vezes que o partido aparece no grupo de principais competidores.\\
+
+		\subsection{Perc}
+		{\bf Tipo:} Contínua \\
+		{\bf Descrição} Percentual de vezes que o partido aparece no grupo de principais competidores.\\
+
+
+%% -------------------------------
+
+
+		\section{Banco 3 - Lan}
+		\subsection{Ano}
+		{\bf Tipo:} Discreta \\
+		{\bf Descrição} Ano da Eleição \\
+
+		\subsection{LanUF}
+		{\bf Tipo:} Contínua \\
+		{\bf Descrição:} Percentual de UF onde um partido lançou dois candidatos (eleições dois terços).
+
+		\subsection{LanPart}
+		{\bf Tipo:} Contínua \\
+		{\bf Descrição:} Percentual de Partidos onde um partido lançou dois candidatos (eleições dois terços).\\
+
+
+%% -----------------------
+
+
+	\section{Como citar esse banco de dados}
+	Para citar os dados e o artigo utilize sua versão de publicação na página da revista  \textbf{Debates}
+	Para citar este codebook, indique a seguinte referência.
+	\\ \\
+	SILVA JÚNIOR, J. A.; NASCIMENTO, Willber S.; LIMA, A. F., OMENA, W. S. (2020)
+	Lei é lei? Maurice Duverger e as eleições para o Senado no Brasil. Grupo de Pesquisa Cidadania e Políticas Públicas (GCPP/UFAL). Disponível em: \url{https://osf.io/sg6dm/}; ou, \url{https://dataverse.org/}. Acesso em: dia/mês/ano.
+
+
+%% --------------------------------
+
+
+\section{Pesquisadores - Elaboração e Contato}
+		José Alexandre - UFAL \\
+		{\color{blue}\href{mailto}{jasjunior2007@yahoo.com.br}}
+
+\vspace{0.5cm}
+		 \noindent Willber Nascimento - UFPE \\
+		{\color{blue}\href{mailto}{nascimentowillber@gmail.com}}
+
+\vspace{0.5cm}
+
+    \noindent Albany Ferreira - UFMG \\
+		{\color{blue}\href{mailto}{albanyinformatica@gmail.com}}
+
+\vspace{0.5cm}
+
+    \noindent Widyane Omena - UFAL \\
+		{\color{blue}\href{mailto}{widyaneso@hotmail.com}}
+
+\end{document}
