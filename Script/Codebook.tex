@@ -1,0 +1,171 @@
+\documentclass[12pt]{article}
+%\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage[{left=3cm,right=2cm,top=3cm,bottom=2cm}]{geometry}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{float} %Me possibilita usar o Hear para a figura.
+\usepackage[dvipsnames]{xcolor}
+\pagestyle{empty}
+
+\title{\textbf{CODEBOOK - Lei é Lei?}}
+
+
+\date{ }
+
+\begin{document}
+\maketitle
+
+\noindent SILVA JÚNIOR, J. A.; NASCIMENTO, Willber S.; LIMA, A. F., OMENA, W. S. (2020)  
+Lei é lei? Maurice Duverger e as eleições para o Senado no Brasil.Revista Debates. 14, 2, p.153-180.
+
+\tableofcontents
+\pagebreak	
+
+
+
+
+
+	\section{Informações aos Usuários}
+	Bancos de dados: Lei é lei? Maurice Duverger e as eleições para o Senado no Brasil.
+	A base deste artigo esta disponibilizada em arquivos em .csv no site {\color{red}\url{https://osf.io/sg6dm/}}. Os códigos e rótulos estão disponíveis neste documento. O artigo encontra-se publicado pela revista \textbf{Debates}.
+	
+	
+	\section{Informações Técnicas}
+	\begin{tabular}{p{3cm} p{10cm}} 
+		Banco 1     & Lei \\
+		N           &  162 \\ 
+		Variáveis   &  10 \\
+		Extensão    & .csv \\  
+		Fonte       & TSE  \\  
+	\end{tabular} \\
+   -- {\color{blue}\url{http://www.tse.jus.br/}}
+ \\ \\ \\
+	\begin{tabular}{p{3cm} p{10cm}} 
+		Banco 2      & part \\
+		N           &  86 \\ 
+		Variáveis   &  6 \\
+		Extensão    & .csv \\  
+		Fonte       & TSE 
+	\end{tabular} \\ 
+-- {\color{blue}\url{http://www.tse.jus.br/}} \\  
+\\ \\
+	\begin{tabular}{p{3cm} p{10cm}} 
+		Banco 3     & Lan \\
+		N           &  3 \\ 
+		Variáveis   &  3 \\
+		Extensão    & .csv \\  
+		Fontes      &  TSE 	\end{tabular} \\ 
+	-- {\color{blue}\url{http://www.tse.jus.br/}} \\  
+
+
+	\section{Banco 1 - Lei}
+	
+		\subsection{Ano}
+		{\bf Tipo:} Discreta \\
+		{\bf Descrição} Ano da Eleição \\
+		\subsection{uf}
+		{\bf Tipo:} Nominal \\
+		{\bf Descrição:} Sigla do Estado. 
+		\subsection{Nep}
+		{\bf Tipo:} Contínua \\
+		{\bf Descrição:} Razão entre 1.00 o somatório do quadrado das proporções de votos.\\
+	
+		
+		\subsection{Magnitude}
+		{\bf Tipo:} Nominal \\
+		{\bf Descrição:} Número de vagas em disputa a cada eleição.
+		.
+		\subsection{Ncand}
+		{\bf Tipo:} Numérica \\
+		{\bf Descrição:} Número de Candidatos para o Senado.\\
+		
+		\subsection{RazPerd}
+		{\bf Tipo:} Contínua \\
+		{\bf Descrição:} Razão entre os percentuais de votos do 1º e do 2º perdedor.\\
+		
+	
+		
+		\subsection{PercVal}
+		{\bf Tipo:} Contínua \\
+		{\bf Descrição:} Percentual de votos válidos para o Senado.\\
+		
+		\subsection{ConcPres}
+		{\bf Tipo:} Contínua \\
+		{\bf Descrição:} Somatório do quadrado das proporções de votos para presidente.\\
+		
+		\subsection{ConcGov}
+		{\bf Tipo:} Contínua \\
+		{\bf Descrição:} Somatório do quadrado das proporções de votos para Governador.\\
+		
+		\section{Banco 2 - part}
+	
+		\subsection{Magnitude}
+		{\bf Tipo:} Nominal \\
+		{\bf Descrição:} Tamanho da Renovação do Senado (Um Terço e Dois Terços).\\
+		
+		\subsection{Ano}
+		{\bf Tipo:} Discreta \\
+		{\bf Descrição} Ano da Eleição \\
+		
+		\subsection{Partido}
+		{\bf Tipo:} Nominal \\
+		{\bf Descrição} Nome do partido que aparece no grupo dos principais competidores.\\
+		
+		\subsection{Número}
+		{\bf Tipo:} Discreta \\
+		{\bf Descrição}Total de vezes que o partido aparece no grupo de principais competidores.\\
+		
+		\subsection{Perc}
+		{\bf Tipo:} Contínua \\
+		{\bf Descrição} Percentual de vezes que o partido aparece no grupo de principais competidores.\\
+		
+		
+		
+		
+		\section{Banco 3 - Lan}
+		\subsection{Ano}
+		{\bf Tipo:} Discreta \\
+		{\bf Descrição} Ano da Eleição \\
+		
+		\subsection{LanUF}
+		{\bf Tipo:} Contínua \\
+		{\bf Descrição:} Percentual de UF onde um partido lançou dois candidatos (eleições dois terços).
+		
+		\subsection{LanPart}
+		{\bf Tipo:} Contínua \\
+		{\bf Descrição:} Percentual de Partidos onde um partido lançou dois candidatos (eleições dois terços).\\
+		
+	
+		
+	\section{Como citar esse banco de dados}
+	Para citar os dados e o artigo utilize sua versão de publicação na página da revista  \textbf{Debates}
+	Para citar este codebook, indique a seguinte referência.
+	\\ \\
+	SILVA JÚNIOR, J. A.; NASCIMENTO, Willber S.; LIMA, A. F., OMENA, W. S. (2020)  
+	Lei é lei? Maurice Duverger e as eleições para o Senado no Brasil. Grupo de Pesquisa Cidadania e Políticas Públicas (GCPP/UFAL). Disponível em:	
+
+	
+	 \noindent  https://osf.io/sg6dm/  \\
+	 https://dataverse.org/ \\ Acesso em: dia/mês/ano. \\
+	 
+	\section{Pesquisadores - Elaboração e Contato}
+		José Alexandre - UFAL \\
+		{\color{blue}\href{mailto}{jasjunior2007@yahoo.com.br}} 
+		\\ 
+		
+		\\
+		
+		 \noindent Willber Nascimento - UFPE \\
+		{\color{blue}\href{mailto}{dalsonbritto@yahoo.com.br}}
+		\\ \\
+		Albany Ferreira - UFMG \\
+		{\color{blue}\href{mailto}{albanyinformatica@gmail.com}}
+		\\ \\
+		Widyane Omena - UFMG \\
+		{\color{blue}\href{mailto}{widyaneso@hotmail.com}}
+		\\ \\
+	
+
+\end{document}
